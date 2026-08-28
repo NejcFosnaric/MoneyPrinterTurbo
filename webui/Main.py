@@ -59,6 +59,7 @@ from app.services import task as tm
 from app.services import version_checker
 from app.utils.logging_utils import configure_terminal_logger
 from app.utils import utils
+from webui import auth
 
 st.set_page_config(
     page_title="MoneyPrinterTurbo",
@@ -558,6 +559,11 @@ def tr(key):
     # 新功能优先维护中英文。其它语言缺少单项翻译时统一回退英文，避免在多个
     # locale 中复制相同英文后长期失去同步；英文也没有该键时才显示原始 key。
     return locales.get("en", {}).get("Translation", {}).get(key, key)
+
+
+# 登录校验必须在任何设置区域渲染之前执行。此处 session_state 已初始化，
+# tr() 可用，而页面上除样式表外还没有输出任何内容。
+auth.require_login(tr)
 
 
 # -----------------------------------------------------------------------------

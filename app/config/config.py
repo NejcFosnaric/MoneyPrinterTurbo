@@ -581,6 +581,16 @@ app["redis_host"] = os.getenv(
     os.getenv("REDIS_HOST", app.get("redis_host", "localhost")),
 )
 
+# API 鉴权密钥允许通过环境变量注入，这样 Coolify/Kubernetes 等平台无需把密钥
+# 写进 config.toml 就能开启鉴权。
+#
+# 只有非空值才会覆盖配置文件：docker compose 的 `${VAR:-}` 会把未设置的变量
+# 展开成空字符串并注入容器，若空值也参与覆盖，就会把 config.toml 里已经配置
+# 好的密钥悄悄清掉，等于在用户不知情的情况下关闭鉴权。
+_env_api_key = os.getenv("MPT_APP_API_KEY", "").strip()
+if _env_api_key:
+    app["api_key"] = _env_api_key
+
 ffmpeg_path = app.get("ffmpeg_path", "")
 if ffmpeg_path and os.path.isfile(ffmpeg_path):
     os.environ["IMAGEIO_FFMPEG_EXE"] = ffmpeg_path
