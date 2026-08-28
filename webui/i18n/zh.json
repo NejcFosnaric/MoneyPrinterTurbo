@@ -9,6 +9,7 @@
     "Login Error": "登录错误",
     "Incorrect username or password": "用户名或密码不正确",
     "Please enter your username and password": "请输入用户名和密码",
+    "Logout": "退出登录",
     "Video Script Settings": "**文案设置**",
     "Video Subject": "视频主题（AI 将根据主题生成视频文案）",
     "Video Subject Placeholder": "例如：人工智能如何改变日常生活",
